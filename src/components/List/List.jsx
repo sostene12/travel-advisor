@@ -4,7 +4,6 @@ import useStyles from "./styles"
 import PlaceDetails from "../PlaceDetails/PlaceDetails"
 
 const List = ({places}) => {
-  console.log(places)
   const classes = useStyles();
   const [type,setType] = useState('restaurants');
   const [rating,setRating] = useState('')

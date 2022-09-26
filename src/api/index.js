@@ -4,8 +4,8 @@ const URL =
   "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
 
 export const getPlacesData = async (bounds) => {
+  const rapidApi = process.env.REACT_APP_RAPID_API_KEY;
   const { sw, ne } = bounds;
-  console.log(sw, ne);
   try {
     const {
       data: { data },
@@ -17,7 +17,7 @@ export const getPlacesData = async (bounds) => {
         tr_longitude: ne.lng,
       },
       headers: {
-        "X-RapidAPI-Key": "7914ddf3d3msh7016aca4e25cde3p18fb23jsna2a4baa3d41c",
+        "X-RapidAPI-Key": rapidApi,
         "X-RapidAPI-Host": "travel-advisor.p.rapidapi.com",
       },
     });
