@@ -3,9 +3,8 @@ import axios from "axios";
 const URL =
   "https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary";
 
-export const getPlacesData = async (bounds) => {
+export const getPlacesData = async (sw, ne) => {
   const rapidApi = process.env.REACT_APP_RAPID_API_KEY;
-  const { sw, ne } = bounds;
   try {
     const {
       data: { data },

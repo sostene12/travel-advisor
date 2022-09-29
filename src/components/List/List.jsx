@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect,createRef } from 'react';
 import { CircularProgress,Grid,Typography,InputLabel,MenuItem,FormControl,Select } from '@material-ui/core';
 import useStyles from "./styles"
 import PlaceDetails from "../PlaceDetails/PlaceDetails"
+import { useSelector } from 'react-redux';
 
-const List = ({places}) => {
+const List = ({places,isLoading}) => {
   const classes = useStyles();
   const [type,setType] = useState('restaurants');
-  const [rating,setRating] = useState('')
+  const [rating,setRating] = useState('');
+
+
+
+  // element references
+  const [elRefs,setElRefs] = useState([])
+
+  const childClicked = useSelector(state => state.child.childClicked);
+  
+  useEffect(() =>{
+    const refs = Array(places?.length).fill().map((_,i) => elRefs[i] || createRef());
+    setElRefs(refs);
+  },[places]);
 
   return (
     <div className={classes.container}>
         <Typography variant="h5">Restaurants,Hotels & Attractions arround you</Typography>
-        <FormControl className={classes.formControl}>
+        {isLoading ? (
+          <div className={classes.loading}>
+            <CircularProgress size='5rem' />
+          </div>
+        ):( 
+          <>
+          <FormControl className={classes.formControl}>
           <InputLabel>Type</InputLabel>
           <Select value={type} onChange={(e) => setType(e.target.value)}>
             <MenuItem value="restaurants">Restaurants</MenuItem>
@@ -28,13 +47,15 @@ const List = ({places}) => {
             <MenuItem value={4.5}>Above 4.5</MenuItem>
           </Select>
         </FormControl>
-        <Grid spacing={3} className={classes.list}>
+        <Grid spacing={3} className={classes.list} >
           {places?.map((place,i) => (
-            <Grid item key={i} xs={12}>
-              <PlaceDetails place={place} />
+            <Grid item key={i} xs={12} ref={elRefs[i]}  >
+              <PlaceDetails place={place} selected={Number(childClicked) === i} refProp={elRefs[i]}  />
             </Grid>
           ))}
-        </Grid>
+        </Grid></>
+        )}
+
     </div>
   )
 }
